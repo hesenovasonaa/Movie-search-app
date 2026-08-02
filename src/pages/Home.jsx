@@ -25,7 +25,8 @@ function Home() {
             : debouncedSearch;
         const data = await searchMovies(query);
         if (data.Response === "True") {
-            setMovies(data.Search);
+            setMovies(data.Search || []);
+            setError("");
         } else {
             setMovies([]);
             setError(data.Error);
@@ -42,11 +43,20 @@ function Home() {
             search={search}
             setSearch={setSearch}
         />
-        {loading && <p>Yüklənir...</p>}
-        {error && <p>{error}</p>}
-        {!loading && !error && (
-            <ResultsList movies={movies} />
-)}
+        {loading && <p className="message">Yüklənir...</p>}
+        {!loading && error && (
+            <p className="message">
+                {error === "Too many results."
+                    ? "Zəhmət olmasa daha dəqiq axtarış sözü yazın."
+                    : "Heç bir film tapılmadı."}
+            </p>
+        )}
+        {!loading && !error && movies.length===0 && (
+            <p className="message">Heç bir film tapılmadı.</p>
+        )}
+        {!loading && !error && movies.length > 0 && (
+                <ResultsList movies={movies} />
+            )}
     </div>
     );
 }

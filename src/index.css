@@ -54,3 +54,9 @@ h1 {
 .search-bar input:focus {
     border-color: #007bff;
 }
+.message{
+    text-align: center;
+    margin: 30px 0;
+    font-size: 18px;
+    color: #555;
+}
