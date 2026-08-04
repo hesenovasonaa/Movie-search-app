@@ -1,16 +1,100 @@
-# React + Vite
+# Movie Search App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Bu layihə React və Vite istifadə edilərək hazırlanmış film axtarış tətbiqidir. Tətbiq OMDb API vasitəsilə filmləri axtarmağa, nəticələri səhifələməyə və istifadəçiyə rahat interfeys təqdim etməyə imkan verir.
 
-Currently, two official plugins are available:
+## İstifadə olunan texnologiyalar
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- React
+- Vite
+- JavaScript (ES6+)
+- CSS3
+- OMDb API
 
-## React Compiler
+## Funksiyalar
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Film adına görə axtarış
+- Debounce (500 ms)
+- Loading (yüklənmə) vəziyyəti
+- Error (xəta) mesajları
+- Empty state (nəticə olmadıqda mesaj)
+- Pagination (səhifələmə)
+- AbortController ilə köhnə sorğuların ləğvi
+- Custom Hook (`useFetch`)
+- Responsive dizayn
 
-## Expanding the ESLint configuration
+## Layihə strukturu
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+src
+│
+├── components
+│   ├── Card.jsx
+│   ├── ResultsList.jsx
+│   └── SearchBar.jsx
+│
+├── hooks
+│   └── useFetch.jsx
+│
+├── pages
+│   └── Home.jsx
+│
+├── services
+│   └── api.js
+│
+├── App.jsx
+└── main.jsx
+
+## Ekran görüntüləri
+
+
+### Ana səhifə
+![Ana səhifə](screenshoots_/desktop1.png)
+
+![Axtarış](screenshoots_/desktop2.png)
+
+### Tablet görünüşü
+![Tablet](screenshoots_/tablet1.png)
+
+![Tablet](screenshoots_/tablet2.png)
+ 
+### Mobil görünüşü
+![Mobil](screenshoots_/mobile1.png)
+
+![Mobil](screenshoots_/mobile2png.png)
+
+## Quraşdırma
+
+Repository-ni klonlayın:
+
+```bash
+git clone https://github.com/hesenovasonaa/Movie-search-app.git
+```
+
+Layihə qovluğuna daxil olun:
+
+```bash
+cd Movie-search-app
+```
+
+Asılılıqları quraşdırın:
+
+```bash
+npm install
+```
+
+`.env` faylı yaradın və API açarınızı əlavə edin:
+
+```env
+VITE_OMDB_API_KEY=Sizin_API_Açarınız
+```
+
+Layihəni başladın:
+
+```bash
+npm run dev
+```
+
+## API
+
+Bu layihədə **OMDb API** istifadə olunmuşdur.
+
+https://www.omdbapi.com/
