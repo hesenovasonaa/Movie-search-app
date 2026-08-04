@@ -19,14 +19,16 @@ function Home() {
     return () => clearTimeout(timer);
 }, [search]);
     useEffect(() => {
+    const controller = new AbortController();
     async function getMovies() {
+        try {
         setLoading(true);
         setError("");
         const query =
             debouncedSearch.trim() === ""
             ? "Batman"
             : debouncedSearch;
-        const data = await searchMovies(query, page);
+        const data = await searchMovies(query, page, controller.signal);
         if (data.Response === "True") {
             setMovies(data.Search || []);
             setTotalResults(Number(data.totalResults));
@@ -36,9 +38,23 @@ function Home() {
             setTotalResults(0);
             setError(data.Error);
         }
+    }
+    catch (error) {
+        if (error.name !== "AbortError") {
+            console.error(error);
+        }
+    } finally {
+        if (!controller.signal.aborted) {
         setLoading(false);
     }
+    }
+}
     getMovies();
+
+return () => {
+    controller.abort();
+};
+
 }, [debouncedSearch, page]);
 const handlePageChange = (newPage) => {
     setPage(newPage);
@@ -59,8 +75,8 @@ const totalPages = Math.ceil(totalResults / 10);
         {!loading && error && (
             <p className="message">
                 {error === "Too many results."
-                    ? "Zəhmət olmasa daha dəqiq axtarış sözü yazın."
-                    : "Heç bir film tapılmadı."}
+                ? "Zəhmət olmasa daha dəqiq axtarış sözü yazın."
+                : error}
             </p>
         )}
         {!loading && !error && movies.length===0 && (
