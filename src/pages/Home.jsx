@@ -1,16 +1,12 @@
 import { useEffect, useState } from "react";
 import SearchBar from "../components/SearchBar";
 import ResultsList from "../components/ResultsList";
-import { searchMovies } from "../services/api";
+import useFetch from "../hooks/useFetch";
 
 function Home() {
-    const [movies, setMovies] = useState([]);
     const [search, setSearch] = useState("Batman");
     const [page, setPage] = useState(1);
-    const [totalResults, setTotalResults] = useState(0);
     const [debouncedSearch, setDebouncedSearch] = useState(search);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
     useEffect(() => {
     const timer = setTimeout(() => {
         setDebouncedSearch(search);
@@ -18,44 +14,12 @@ function Home() {
     }, 500);
     return () => clearTimeout(timer);
 }, [search]);
-    useEffect(() => {
-    const controller = new AbortController();
-    async function getMovies() {
-        try {
-        setLoading(true);
-        setError("");
-        const query =
-            debouncedSearch.trim() === ""
-            ? "Batman"
-            : debouncedSearch;
-        const data = await searchMovies(query, page, controller.signal);
-        if (data.Response === "True") {
-            setMovies(data.Search || []);
-            setTotalResults(Number(data.totalResults));
-            setError("");
-        } else {
-            setMovies([]);
-            setTotalResults(0);
-            setError(data.Error);
-        }
-    }
-    catch (error) {
-        if (error.name !== "AbortError") {
-            console.error(error);
-        }
-    } finally {
-        if (!controller.signal.aborted) {
-        setLoading(false);
-    }
-    }
-}
-    getMovies();
-
-return () => {
-    controller.abort();
-};
-
-}, [debouncedSearch, page]);
+const {
+    movies,
+    loading,
+    error,
+    totalResults,
+} = useFetch(debouncedSearch, page);
 const handlePageChange = (newPage) => {
     setPage(newPage);
     window.scrollTo({
