@@ -4,7 +4,7 @@ import ResultsList from "../components/ResultsList";
 import useFetch from "../hooks/useFetch";
 
 function Home() {
-    const [search, setSearch] = useState("Batman");
+    const [search, setSearch] = useState("");
     const [page, setPage] = useState(1);
     const [debouncedSearch, setDebouncedSearch] = useState(search);
     useEffect(() => {
@@ -43,7 +43,7 @@ const totalPages = Math.ceil(totalResults / 10);
                 : error}
             </p>
         )}
-        {!loading && !error && movies.length===0 && (
+        {!loading && !error && movies.length === 0 && search.trim() !== "" && (
             <p className="message">Heç bir film tapılmadı.</p>
         )}
         {!loading && !error && movies.length > 0 && (
